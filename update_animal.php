@@ -8,7 +8,7 @@
 <body>
     <section class="section">
         <div class="container">
-            <h1 class="title">Add New Animal</h1>
+            <h1 class="title">Update Animal Record</h1>
             <form method="post" action="">
                 <div class="columns">
                     <div class="field column">
