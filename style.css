@@ -1,5 +1,5 @@
 .button.is-primary,
-.is-primary {
+.is-primary, .tabs.is-toggle li.is-active a {
   background-color: #7C53FA !important;
   border-color: #7C53FA !important;
   color: white !important;

@@ -48,7 +48,7 @@
     $owner_id = $_GET['owner_id'] ?? '';
 
     $sql = "SELECT * FROM animal WHERE 
-                animal_id LIKE '%$animal_id%' AND 
+                animal_id LIKE '$animal_id%' AND 
                 animal_name LIKE '%$animal_name%' AND 
                 animal_type LIKE '%$animal_type%' AND 
                 date_of_birth LIKE '%$date_of_birth%' AND 
@@ -68,7 +68,7 @@
     }
     ?>
 
-    <section class="section">
+    <section class="section column">
         <section class="section">
             <div class="columns mb-3">
                 <div class="column">
@@ -114,10 +114,25 @@
             <?php endif; ?>
 
             <?php mysqli_free_result($result); ?>
-            </sectio>
         </section>
+    </section>
 
-        <section class="section">
+
+    <section class="section" style="margin-top: -50px">
+        <div class="px-6 pb-3">
+            <div class="tabs is-toggle is-fullwidth">
+                <ul>
+                    <li class="is-active" data-tab="filter">
+                        <a>Filter Criteria</a>
+                    </li>
+                    <li data-tab="update">
+                        <a>Update Information</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <section id="filter-section" class="section column box is-rounded is-shadowless">
             <h1 class="title">Filter Criteria</h1>
             <form method="get" action="">
                 <div class="columns">
@@ -162,12 +177,94 @@
                 </div>
 
                 <div class="field mt-5">
-                    <button type="submit" class="button is-primary">Search</button>
+                    <button type="submit" class="button is-primary">Find Records</button>
                 </div>
             </form>
         </section>
 
-        <?php mysqli_close($conn); ?>
+        <section id="update-section" class="section box is-rounded is-shadowless">
+            <h1 class="title">Update Information</h1>
+            <form method="get" action="">
+                <div class="columns">
+                    <div class="field column">
+                        <label class="label" for="animal_id">Animal ID:</label>
+                        <input class="input" type="text" name="animal_id">
+                    </div>
+                    <div class="field column">
+                        <label class="label" for="animal_name">Animal Name:</label>
+                        <input class="input" type="text" name="animal_name">
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="field column">
+                        <label class="label" for="animal_type">Animal Type:</label>
+                        <input class="input" type="text" name="animal_type">
+                    </div>
+                    <div class="field column">
+                        <label class="label" for="breed">Breed:</label>
+                        <input class="input" type="text" name="breed">
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="field column">
+                        <label class="label" for="date_of_birth">Date of Birth:</label>
+                        <input class="input" type="date" name="date_of_birth">
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="field column">
+                        <label class="label" for="allergies">Allergies:</label>
+                        <input class="input" type="text" name="allergies">
+                    </div>
+                    <div class="field column">
+                        <label class="label" for="medical_history">Medical History:</label>
+                        <input class="input" type="text" name="medical_history">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="owner_id">Owner ID:</label>
+                    <input class="input" type="text" name="owner_id">
+                </div>
+
+                <div class="field mt-5">
+                    <button type="submit" class="button is-danger is-dark">Update Records</button>
+                </div>
+            </form>
+        </section>
+    </section>
+
+
+
+    <?php mysqli_close($conn); ?>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tabs li');
+            const filterSection = document.getElementById('filter-section');
+            const updateSection = document.getElementById('update-section');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('is-active'));
+                    filterSection.style.display = 'none';
+                    updateSection.style.display = 'none';
+
+                    tab.classList.add('is-active');
+
+                    if (tab.getAttribute('data-tab') === 'filter') {
+                        filterSection.style.display = 'block';
+                        updateSection.style.display = 'none';
+                    } else if (tab.getAttribute('data-tab') === 'update') {
+                        updateSection.style.display = 'block';
+                        filterSection.style.display = 'none';
+                    }
+                });
+            });
+
+            filterSection.style.display = 'block';
+            updateSection.style.display = 'none';
+        });
+    </script>
 </body>
 
 </html>

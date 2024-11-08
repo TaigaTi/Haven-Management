@@ -29,7 +29,7 @@
 
     <section class="section">
         <div class="container">
-            <h1 class="title">Add Pet Registration</h1>
+            <h1 class="title">Pet Registration</h1>
             <form method="post" action="">
                 <div class="columns">
                     <div class="field column">

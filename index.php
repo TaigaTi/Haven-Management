@@ -44,7 +44,7 @@
             </div>
 
             <div class="column has-text-centered" onclick="window.location.href='update_animal.php' ">
-                <button class="button is-primary is-fullwidth">Update Recordss</button>
+                <button class="button is-primary is-fullwidth">Update Records</button>
             </div>
         </div>
     </section>

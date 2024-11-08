@@ -41,17 +41,17 @@
         die('Could not connect: ' . mysqli_connect_error());
     }
 
-    $animal_id = $_POST['animal_id'] ?? '';
-    $animal_name = $_POST['animal_name'] ?? '';
-    $animal_type = $_POST['animal_type'] ?? '';
-    $date_of_birth = $_POST['date_of_birth'] ?? '';
-    $breed = $_POST['breed'] ?? '';
-    $allergies = $_POST['allergies'] ?? '';
-    $medical_history = $_POST['medical_history'] ?? '';
-    $owner_id = $_POST['owner_id'] ?? '';
+    $animal_id = $_GET['animal_id'] ?? '';
+    $animal_name = $_GET['animal_name'] ?? '';
+    $animal_type = $_GET['animal_type'] ?? '';
+    $date_of_birth = $_GET['date_of_birth'] ?? '';
+    $breed = $_GET['breed'] ?? '';
+    $allergies = $_GET['allergies'] ?? '';
+    $medical_history = $_GET['medical_history'] ?? '';
+    $owner_id = $_GET['owner_id'] ?? '';
 
     $sql = "SELECT * FROM animal WHERE 
-                animal_id LIKE '%$animal_id%' AND 
+                animal_id LIKE '$animal_id%' AND 
                 animal_name LIKE '%$animal_name%' AND 
                 animal_type LIKE '%$animal_type%' AND 
                 date_of_birth LIKE '%$date_of_birth%' AND 
@@ -134,7 +134,7 @@
 
         <section class="section">
             <h1 class="title">Search</h1>
-            <form method="post" action="">
+            <form method="GET" action="">
                 <div class="columns">
                     <div class="field column">
                         <label class="label" for="animal_id">Animal ID:</label>
