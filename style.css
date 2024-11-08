@@ -1,0 +1,10 @@
+.button.is-primary,
+.is-primary {
+  background-color: #7C53FA !important;
+  border-color: #7C53FA !important;
+  color: white !important;
+}
+
+.is-primary-text {
+  color: #846ad3 !important;
+}
