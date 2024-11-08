@@ -50,15 +50,53 @@
     $medical_history = $_GET['medical_history'] ?? '';
     $owner_id = $_GET['owner_id'] ?? '';
 
+    function getInputRange($input)
+    {
+        if ($input && strpos($input, '-') !== false) {
+            $input_range = explode('-', $input);
+            $input_start = intval($input_range[0]);
+            $input_end = intval($input_range[1]);
+        } elseif ($input) {
+            $input_start = intval($input);
+            $input_end = intval($input);
+        } else {
+            $input_start = null;
+            $input_end = null;
+        }
+
+        return [
+            'start' => $input_start,
+            'end' => $input_end,
+        ];
+    }
+
+    $animal_id_range = getInputRange($animal_id);
+    $animal_id_start = $animal_id_range['start'];
+    $animal_id_end = $animal_id_range['end'];
+
+    $owner_id_range = getInputRange($owner_id);
+    $owner_id_start = $owner_id_range['start'];
+    $owner_id_end = $owner_id_range['end'];
+
     $sql = "SELECT * FROM animal WHERE 
-                animal_id LIKE '$animal_id%' AND 
-                animal_name LIKE '%$animal_name%' AND 
-                animal_type LIKE '%$animal_type%' AND 
-                date_of_birth LIKE '%$date_of_birth%' AND 
-                (breed LIKE '%$breed%' OR breed IS NULL AND '$breed' = '') AND 
-                (allergies LIKE '%$allergies%' OR allergies IS NULL AND '$allergies' = '') AND
-                (medical_history LIKE '%$medical_history%' OR medical_history IS NULL AND '$medical_history' = '') AND
-                (owner_id LIKE '%$owner_id%' OR owner_id IS NULL AND '$owner_id' = '')";
+                   animal_name LIKE '%$animal_name%' AND 
+                   animal_type LIKE '%$animal_type%' AND 
+                   date_of_birth LIKE '%$date_of_birth%' AND 
+                   (breed LIKE '%$breed%' OR (breed IS NULL AND '$breed' = '')) AND 
+                   (allergies LIKE '%$allergies%' OR (allergies IS NULL AND '$allergies' = '')) AND
+                   (medical_history LIKE '%$medical_history%' OR (medical_history IS NULL AND '$medical_history' = ''))";
+
+    if ($animal_id_start !== null && $animal_id_end !== null) {
+        $sql .= " AND animal_id BETWEEN '$animal_id_start' AND '$animal_id_end'";
+    } elseif ($animal_id !== '') {
+        $sql .= " AND animal_id LIKE '$animal_id%'";
+    }
+
+    if ($owner_id_start !== null && $owner_id_end !== null) {
+        $sql .= " AND owner_id BETWEEN '$owner_id_start' AND '$owner_id_end'";
+    } elseif ($owner_id !== '') {
+        $sql .= " AND owner_id LIKE '$owner_id%'";
+    }
 
     $result = mysqli_query($conn, $sql);
 

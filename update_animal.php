@@ -47,15 +47,53 @@
     $medical_history = $_GET['medical_history'] ?? '';
     $owner_id = $_GET['owner_id'] ?? '';
 
+    function getInputRange($input)
+    {
+        if ($input && strpos($input, '-') !== false) {
+            $input_range = explode('-', $input);
+            $input_start = intval($input_range[0]);
+            $input_end = intval($input_range[1]);
+        } elseif ($input) {
+            $input_start = intval($input);
+            $input_end = intval($input);
+        } else {
+            $input_start = null;
+            $input_end = null;
+        }
+
+        return [
+            'start' => $input_start,
+            'end' => $input_end,
+        ];
+    }
+
+    $animal_id_range = getInputRange($animal_id);
+    $animal_id_start = $animal_id_range['start'];
+    $animal_id_end = $animal_id_range['end'];
+
+    $owner_id_range = getInputRange($owner_id);
+    $owner_id_start = $owner_id_range['start'];
+    $owner_id_end = $owner_id_range['end'];
+
     $sql = "SELECT * FROM animal WHERE 
-                animal_id LIKE '$animal_id%' AND 
                 animal_name LIKE '%$animal_name%' AND 
                 animal_type LIKE '%$animal_type%' AND 
                 date_of_birth LIKE '%$date_of_birth%' AND 
-                (breed LIKE '%$breed%' OR breed IS NULL AND '$breed' = '') AND 
-                (allergies LIKE '%$allergies%' OR allergies IS NULL AND '$allergies' = '') AND
-                (medical_history LIKE '%$medical_history%' OR medical_history IS NULL AND '$medical_history' = '') AND
-                (owner_id LIKE '%$owner_id%' OR owner_id IS NULL AND '$owner_id' = '')";
+                (breed LIKE '%$breed%' OR (breed IS NULL AND '$breed' = '')) AND 
+                (allergies LIKE '%$allergies%' OR (allergies IS NULL AND '$allergies' = '')) AND
+                (medical_history LIKE '%$medical_history%' OR (medical_history IS NULL AND '$medical_history' = ''))";
+
+    if ($animal_id_start !== null && $animal_id_end !== null) {
+        $sql .= " AND animal_id BETWEEN '$animal_id_start' AND '$animal_id_end'";
+    } elseif ($animal_id !== '') {
+        $sql .= " AND animal_id LIKE '$animal_id%'";
+    }
+
+    if ($owner_id_start !== null && $owner_id_end !== null) {
+        $sql .= " AND owner_id BETWEEN '$owner_id_start' AND '$owner_id_end'";
+    } elseif ($owner_id !== '') {
+        $sql .= " AND owner_id LIKE '$owner_id%'";
+    }
 
     $result = mysqli_query($conn, $sql);
 
@@ -65,6 +103,103 @@
     ) {
         $sql = "SELECT * FROM animal";
         $result = mysqli_query($conn, $sql);
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $updated_animal_id = $_POST['animal_id'];
+        $updated_animal_name = $_POST['animal_name'];
+        $updated_animal_type = $_POST['animal_type'];
+        $updated_date_of_birth = $_POST['date_of_birth'];
+        $updated_breed = $_POST['breed'];
+        $updated_allergies = $_POST['allergies'];
+        $updated_medical_history = $_POST['medical_history'];
+        $updated_owner_id = $_POST['owner_id'];
+
+        $params = [
+            'animal_id' => $animal_id,
+            'animal_name' => $animal_name,
+            'animal_type' => $animal_type,
+            'date_of_birth' => $date_of_birth,
+            'breed' => $breed,
+            'allergies' => $allergies,
+            'medical_history' => $medical_history,
+            'owner_id' => $owner_id,
+            'animal_id_start' => $animal_id_start,
+            'animal_id_end' => $animal_id_end,
+            'owner_id_start' => $owner_id_start,
+            'owner_id_end' => $owner_id_end,
+        ];
+
+
+        function whereCondition($params)
+        {
+            $sql = "WHERE animal_name LIKE '%$params[animal_name]%' AND 
+            animal_type LIKE '%$params[animal_type]%' AND 
+            date_of_birth LIKE '%$params[date_of_birth]%' AND 
+            (breed LIKE '%$params[breed]%' OR (breed IS NULL AND '$params[breed]' = '')) AND 
+            (allergies LIKE '%$params[allergies]%' OR (allergies IS NULL AND '$params[allergies]' = '')) AND
+            (medical_history LIKE '%$params[medical_history]%' OR (medical_history IS NULL AND '$params[medical_history]' = ''))";
+
+            if ($params['animal_id_start'] !== null && $params['animal_id_end'] !== null) {
+                $sql .= " AND animal_id BETWEEN '$params[animal_id_start]' AND '$params[animal_id_end]'";
+            } elseif ($params['animal_id'] !== '') {
+                $sql .= " AND animal_id LIKE '$params[animal_id]%'";
+            }
+
+            if ($params['owner_id_start'] !== null && $params['owner_id_end'] !== null) {
+                $sql .= " AND owner_id BETWEEN '$params[owner_id_start]' AND '$params[owner_id_end]'";
+            } elseif ($params['owner_id'] !== '') {
+                $sql .= " AND owner_id LIKE '$params[owner_id]%'";
+            }
+
+            return $sql;
+        }
+
+        $updates = [];
+
+        if (!empty($updated_animal_id)) {
+            $updates[] = "animal_id = '$updated_animal_id'";
+        }
+        if (!empty($updated_animal_name)) {
+            $updates[] = "animal_name = '$updated_animal_name'";
+        }
+        if (!empty($updated_animal_type)) {
+            $updates[] = "animal_type = '$updated_animal_type'";
+        }
+        if (!empty($updated_date_of_birth)) {
+            $updates[] = "date_of_birth = '$updated_date_of_birth'";
+        }
+        if (!empty($updated_breed)) {
+            $updates[] = "breed = '$updated_breed'";
+        }
+        if (!empty($updated_allergies)) {
+            $updates[] = "allergies = '$updated_allergies'";
+        }
+        if (!empty($updated_medical_history)) {
+            $updates[] = "medical_history = '$updated_medical_history'";
+        }
+        if (!empty($updated_owner_id)) {
+            $updates[] = "owner_id = '$updated_owner_id'";
+        }
+
+        if (count($updates) > 0) {
+            $sql_update = "UPDATE animal SET " . implode(", ", $updates) . " " . whereCondition([
+                'animal_id' => $animal_id,
+                'animal_name' => $animal_name,
+                'animal_type' => $animal_type,
+                'date_of_birth' => $date_of_birth,
+                'breed' => $breed,
+                'allergies' => $allergies,
+                'medical_history' => $medical_history,
+                'owner_id' => $owner_id,
+                'animal_id_start' => $animal_id_start,
+                'animal_id_end' => $animal_id_end,
+                'owner_id_start' => $owner_id_start,
+                'owner_id_end' => $owner_id_end,
+            ]);
+            mysqli_query($conn, $sql_update);
+            header("Refresh:0");
+        }
     }
     ?>
 
@@ -138,21 +273,21 @@
                 <div class="columns">
                     <div class="field column">
                         <label class="label" for="animal_id">Animal ID:</label>
-                        <input class="input" type="text" name="animal_id">
+                        <input class="input" type="text" name="animal_id" placeholder="E.g. Range: 2 - 3 or Single: 5">
                     </div>
                     <div class="field column">
                         <label class="label" for="animal_name">Animal Name:</label>
-                        <input class="input" type="text" name="animal_name">
+                        <input class="input" type="text" name="animal_name" placeholder="Buddy">
                     </div>
                 </div>
                 <div class="columns">
                     <div class="field column">
                         <label class="label" for="animal_type">Animal Type:</label>
-                        <input class="input" type="text" name="animal_type">
+                        <input class="input" type="text" name="animal_type" placeholder="Cat or Dog">
                     </div>
                     <div class="field column">
                         <label class="label" for="breed">Breed:</label>
-                        <input class="input" type="text" name="breed">
+                        <input class="input" type="text" name="breed" placeholder="German Shepherd">
                     </div>
                 </div>
                 <div class="columns">
@@ -173,7 +308,7 @@
                 </div>
                 <div class="field">
                     <label class="label" for="owner_id">Owner ID:</label>
-                    <input class="input" type="text" name="owner_id">
+                    <input class="input" type="text" name="owner_id" placeholder="E.g. Range: 2 - 3 or Single: 5">
                 </div>
 
                 <div class="field mt-5">
@@ -184,7 +319,7 @@
 
         <section id="update-section" class="section box is-rounded is-shadowless">
             <h1 class="title">Update Information</h1>
-            <form method="get" action="">
+            <form method="post" action="">
                 <div class="columns">
                     <div class="field column">
                         <label class="label" for="animal_id">Animal ID:</label>
