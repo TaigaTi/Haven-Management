@@ -35,16 +35,19 @@
         <div class="columns is-6">
             <div class="column has-text-centered">
                 <button class="button is-primary is-fullwidth"
-                    onclick="window.location.href='search_records.php'">Search Animals</button>
+                    onclick="window.location.href='search_records.php'">Search Records</button>
             </div>
 
             <div class="column has-text-centered">
-                <button class="button is-primary is-fullwidth" onclick="window.location.href='pet_registration.php'">New
-                    Animal</button>
+                <button class="button is-primary is-fullwidth" onclick="window.location.href='pet_registration.php'">
+                    Pet Registration
+                </button>
             </div>
 
             <div class="column has-text-centered" onclick="window.location.href='update_records.php' ">
-                <button class="button is-primary is-fullwidth">Update Records</button>
+                <button class="button is-primary is-fullwidth">
+                    Update Records
+                </button>
             </div>
         </div>
     </section>
