@@ -22,9 +22,9 @@
         <div class="navbar-menu">
             <div class="navbar-end">
                 <a href="index.php" class="px-5 navbar-item">Home</a>
-                <a href="search_animals.php" class="px-5 navbar-item is-primary-text">Search Animals</a>
-                <a href="new_animal.php" class="px-5 navbar-item">Pet Registration</a>
-                <a href="update_animal.php" class="px-5 navbar-item">Update Records</a>
+                <a href="search_records.php" class="px-5 navbar-item is-primary-text">Search Animals</a>
+                <a href="pet_registration.php" class="px-5 navbar-item">Pet Registration</a>
+                <a href="update_records.php" class="px-5 navbar-item">Update Records</a>
             </div>
         </div>
     </nav>
@@ -88,15 +88,11 @@
 
     if ($animal_id_start !== null && $animal_id_end !== null) {
         $sql .= " AND animal_id BETWEEN '$animal_id_start' AND '$animal_id_end'";
-    } elseif ($animal_id !== '') {
-        $sql .= " AND animal_id LIKE '$animal_id%'";
-    }
+    } 
 
     if ($owner_id_start !== null && $owner_id_end !== null) {
         $sql .= " AND owner_id BETWEEN '$owner_id_start' AND '$owner_id_end'";
-    } elseif ($owner_id !== '') {
-        $sql .= " AND owner_id LIKE '$owner_id%'";
-    }
+    } 
 
     $result = mysqli_query($conn, $sql);
 
@@ -119,11 +115,11 @@
                 <div class="column-is-one-third">
                     <div class="columns">
                         <div class="column">
-                            <a class="button is-primary" href="new_animal.php">Add Animal Record</a>
+                            <a class="button is-primary" href="pet_registration.php">Add Animal Record</a>
                         </div>
 
                         <div class="column">
-                            <a class="button is-primary" href="update_animal.php">Update Records</a>
+                            <a class="button is-primary" href="update_records.php">Update Records</a>
                         </div>
                     </div>
                 </div>
@@ -172,50 +168,55 @@
 
         <section class="section">
             <h1 class="title">Search</h1>
-            <form method="GET" action="">
+            <form method="get" action="">
                 <div class="columns">
                     <div class="field column">
                         <label class="label" for="animal_id">Animal ID:</label>
-                        <input class="input" type="text" name="animal_id">
+                        <input class="input" type="text" name="animal_id" placeholder="E.g. Range: 2 - 3 or Single: 5"
+                            value="<?php echo $animal_id; ?>">
                     </div>
                     <div class="field column">
                         <label class="label" for="animal_name">Animal Name:</label>
-                        <input class="input" type="text" name="animal_name">
+                        <input class="input" type="text" name="animal_name" placeholder="Buddy"
+                            value="<?php echo $animal_name; ?>">
                     </div>
                 </div>
                 <div class="columns">
                     <div class="field column">
                         <label class="label" for="animal_type">Animal Type:</label>
-                        <input class="input" type="text" name="animal_type">
+                        <input class="input" type="text" name="animal_type" placeholder="Cat or Dog"
+                            value="<?php echo $animal_type; ?>">
                     </div>
                     <div class="field column">
                         <label class="label" for="breed">Breed:</label>
-                        <input class="input" type="text" name="breed">
+                        <input class="input" type="text" name="breed" placeholder="German Shepherd"
+                            value="<?php echo $breed; ?>">
                     </div>
                 </div>
                 <div class="columns">
                     <div class="field column">
                         <label class="label" for="date_of_birth">Date of Birth:</label>
-                        <input class="input" type="date" name="date_of_birth">
+                        <input class="input" type="date" name="date_of_birth" value="<?php echo $date_of_birth; ?>">
                     </div>
                 </div>
                 <div class="columns">
                     <div class="field column">
                         <label class="label" for="allergies">Allergies:</label>
-                        <input class="input" type="text" name="allergies">
+                        <input class="input" type="text" name="allergies" value="<?php echo $allergies; ?>">
                     </div>
                     <div class="field column">
                         <label class="label" for="medical_history">Medical History:</label>
-                        <input class="input" type="text" name="medical_history">
+                        <input class="input" type="text" name="medical_history" value="<?php echo $medical_history; ?>">
                     </div>
                 </div>
                 <div class="field">
                     <label class="label" for="owner_id">Owner ID:</label>
-                    <input class="input" type="text" name="owner_id">
+                    <input class="input" type="text" name="owner_id" placeholder="E.g. Range: 2 - 3 or Single: 5"
+                        value="<?php echo $owner_id; ?>">
                 </div>
 
                 <div class="field mt-5">
-                    <button type="submit" class="button is-primary">Search</button>
+                    <button type="submit" class="button is-primary">Find Records</button>
                 </div>
             </form>
         </section>

@@ -18,9 +18,9 @@
         <div class="navbar-menu">
             <div class="navbar-end">
                 <a href="index.php" class="px-5 navbar-item is-primary-text">Home</a>
-                <a href="search_animals.php" class="px-5 navbar-item">Search Animals</a>
-                <a href="new_animal.php" class="px-5 navbar-item">Pet Registration</a>
-                <a href="update_animal.php" class="px-5 navbar-item">Update Records</a>
+                <a href="search_records.php" class="px-5 navbar-item">Search Animals</a>
+                <a href="pet_registration.php" class="px-5 navbar-item">Pet Registration</a>
+                <a href="update_records.php" class="px-5 navbar-item">Update Records</a>
             </div>
         </div>
     </nav>
@@ -35,15 +35,15 @@
         <div class="columns is-6">
             <div class="column has-text-centered">
                 <button class="button is-primary is-fullwidth"
-                    onclick="window.location.href='search_animals.php'">Search Animals</button>
+                    onclick="window.location.href='search_records.php'">Search Animals</button>
             </div>
 
             <div class="column has-text-centered">
-                <button class="button is-primary is-fullwidth" onclick="window.location.href='new_animal.php'">New
+                <button class="button is-primary is-fullwidth" onclick="window.location.href='pet_registration.php'">New
                     Animal</button>
             </div>
 
-            <div class="column has-text-centered" onclick="window.location.href='update_animal.php' ">
+            <div class="column has-text-centered" onclick="window.location.href='update_records.php' ">
                 <button class="button is-primary is-fullwidth">Update Records</button>
             </div>
         </div>

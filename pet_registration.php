@@ -20,9 +20,9 @@
         <div class="navbar-menu">
             <div class="navbar-end">
                 <a href="index.php" class="px-5 navbar-item">Home</a>
-                <a href="search_animals.php" class="px-5 navbar-item">Search Animals</a>
-                <a href="new_animal.php" class="px-5 navbar-item is-primary-text">Pet Registration</a>
-                <a href="update_animal.php" class="px-5 navbar-item">Update Records</a>
+                <a href="search_records.php" class="px-5 navbar-item">Search Animals</a>
+                <a href="pet_registration.php" class="px-5 navbar-item is-primary-text">Pet Registration</a>
+                <a href="update_records.php" class="px-5 navbar-item">Update Records</a>
             </div>
         </div>
     </nav>
@@ -101,7 +101,7 @@
                                 die("Connection failed: " . $conn->connect_error);
                             }
 
-                            $sql = "SELECT owner_id FROM owner";
+                            $sql = "SELECT owner_id FROM owner;";
                             $result = $conn->query($sql);
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
@@ -188,7 +188,7 @@
             $email_addr = $_POST['email'];
 
             $sql_owner = "INSERT INTO owner (owner_id, owner_fname, owner_lname, phone_number, email_addr) 
-                      VALUES ('$new_owner_id', '$owner_fname', '$owner_lname', '$phone_number', '$email_addr')";
+                      VALUES ('$new_owner_id', '$owner_fname', '$owner_lname', '$phone_number', '$email_addr');";
 
             if ($conn->query($sql_owner) === TRUE) {
                 echo "<script>alert('New owner added successfully.');</script>";
@@ -211,10 +211,10 @@
         $medical_history = $_POST['medical_history'];
 
         $sql_animal = "INSERT INTO animal (animal_id, animal_name, animal_type, breed, date_of_birth, allergies, medical_history, owner_id) 
-                   VALUES ('$animal_id', '$animal_name', '$animal_type', '$breed', '$date_of_birth', '$allergies', '$medical_history', '$owner_id')";
+                   VALUES ('$animal_id', '$animal_name', '$animal_type', '$breed', '$date_of_birth', '$allergies', '$medical_history', '$owner_id');";
 
         if ($conn->query($sql_animal) === TRUE) {
-            echo "<script>alert('Pet Registration added successfully.');</script>";
+            echo "<script>alert('New animal added successfully.');</script>";
         } else {
             echo "<script>alert('Error adding animal: " . $conn->error . "');</script>";
         }

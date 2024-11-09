@@ -19,9 +19,9 @@
         <div class="navbar-menu">
             <div class="navbar-end">
                 <a href="index.php" class="px-5 navbar-item">Home</a>
-                <a href="search_animals.php" class="px-5 navbar-item">Search Animals</a>
-                <a href="new_animal.php" class="px-5 navbar-item">Pet Registration</a>
-                <a href="update_animal.php" class="px-5 navbar-item is-primary-text">Update Records</a>
+                <a href="search_records.php" class="px-5 navbar-item">Search Animals</a>
+                <a href="pet_registration.php" class="px-5 navbar-item">Pet Registration</a>
+                <a href="update_records.php" class="px-5 navbar-item is-primary-text">Update Records</a>
             </div>
         </div>
     </nav>
@@ -85,14 +85,10 @@
 
     if ($animal_id_start !== null && $animal_id_end !== null) {
         $sql .= " AND animal_id BETWEEN '$animal_id_start' AND '$animal_id_end'";
-    } elseif ($animal_id !== '') {
-        $sql .= " AND animal_id LIKE '$animal_id%'";
-    }
+    } 
 
     if ($owner_id_start !== null && $owner_id_end !== null) {
         $sql .= " AND owner_id BETWEEN '$owner_id_start' AND '$owner_id_end'";
-    } elseif ($owner_id !== '') {
-        $sql .= " AND owner_id LIKE '$owner_id%'";
     }
 
     $result = mysqli_query($conn, $sql);
@@ -106,7 +102,7 @@
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $updated_animal_id = $_POST['animal_id'];
+        $updated_animal_id = $_POST['animal_id'] ?? '';
         $updated_animal_name = $_POST['animal_name'];
         $updated_animal_type = $_POST['animal_type'];
         $updated_date_of_birth = $_POST['date_of_birth'];
@@ -142,15 +138,11 @@
 
             if ($params['animal_id_start'] !== null && $params['animal_id_end'] !== null) {
                 $sql .= " AND animal_id BETWEEN '$params[animal_id_start]' AND '$params[animal_id_end]'";
-            } elseif ($params['animal_id'] !== '') {
-                $sql .= " AND animal_id LIKE '$params[animal_id]%'";
-            }
+            } 
 
             if ($params['owner_id_start'] !== null && $params['owner_id_end'] !== null) {
                 $sql .= " AND owner_id BETWEEN '$params[owner_id_start]' AND '$params[owner_id_end]'";
-            } elseif ($params['owner_id'] !== '') {
-                $sql .= " AND owner_id LIKE '$params[owner_id]%'";
-            }
+            } 
 
             return $sql;
         }
@@ -257,10 +249,10 @@
         <div class="px-6 pb-3">
             <div class="tabs is-toggle is-fullwidth">
                 <ul>
-                    <li class="is-active" data-tab="filter">
+                    <li class="filter-tab is-active" data-tab="filter">
                         <a>Filter Criteria</a>
                     </li>
-                    <li data-tab="update">
+                    <li class="update-tab" data-tab="update">
                         <a>Update Information</a>
                     </li>
                 </ul>
@@ -273,8 +265,68 @@
                 <div class="columns">
                     <div class="field column">
                         <label class="label" for="animal_id">Animal ID:</label>
-                        <input class="input" type="text" name="animal_id" placeholder="E.g. Range: 2 - 3 or Single: 5">
+                        <input class="input" type="text" name="animal_id" placeholder="E.g. Range: 2 - 3 or Single: 5" value="<?php echo $animal_id; ?>">
                     </div>
+                    <div class="field column">
+                        <label class="label" for="animal_name">Animal Name:</label>
+                        <input class="input" type="text" name="animal_name" placeholder="Buddy" value="<?php echo $animal_name; ?>">
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="field column">
+                        <label class="label" for="animal_type">Animal Type:</label>
+                        <input class="input" type="text" name="animal_type" placeholder="Cat or Dog" value="<?php echo $animal_type; ?>">
+                    </div>
+                    <div class="field column">
+                        <label class="label" for="breed">Breed:</label>
+                        <input class="input" type="text" name="breed" placeholder="German Shepherd" value="<?php echo $breed; ?>">
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="field column">
+                        <label class="label" for="date_of_birth">Date of Birth:</label>
+                        <input class="input" type="date" name="date_of_birth" value="<?php echo $date_of_birth; ?>">
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="field column">
+                        <label class="label" for="allergies">Allergies:</label>
+                        <input class="input" type="text" name="allergies" value="<?php echo $allergies; ?>">
+                    </div>
+                    <div class="field column">
+                        <label class="label" for="medical_history">Medical History:</label>
+                        <input class="input" type="text" name="medical_history" value="<?php echo $medical_history; ?>">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="owner_id">Owner ID:</label>
+                    <input class="input" type="text" name="owner_id" placeholder="E.g. Range: 2 - 3 or Single: 5" value="<?php echo $owner_id; ?>">
+                </div>
+
+                <div class="field mt-5">
+                    <button type="submit" class="button is-primary">Find Records</button>
+                </div>
+            </form>
+        </section>
+
+        <section id="update-section" class="section box is-rounded is-shadowless">
+            <h1 class="title">Update Information</h1>
+            <form method="post" action="">
+                <div class="columns">
+                   <?php
+                // If there are multiple records selected, show disabled input fields
+                if ($_GET['animal_id'] && strpos($_GET['animal_id'], '-') !== false) {
+                    echo '<div class="field column">
+                        <label class="label" for="animal_id">Animal ID:</label>
+                        <input class="input" type="text" name="animal_id" value="' . $_GET['animal_id'] . '" disabled>
+                    </div>';
+                } else {
+                    echo '<div class="field column">
+                        <label class="label" for="animal_id">Animal ID:</label>
+                        <input class="input" type="text" name="animal_id" placeholder="5">
+                    </div>';
+                }
+                   ?>
                     <div class="field column">
                         <label class="label" for="animal_name">Animal Name:</label>
                         <input class="input" type="text" name="animal_name" placeholder="Buddy">
@@ -308,57 +360,7 @@
                 </div>
                 <div class="field">
                     <label class="label" for="owner_id">Owner ID:</label>
-                    <input class="input" type="text" name="owner_id" placeholder="E.g. Range: 2 - 3 or Single: 5">
-                </div>
-
-                <div class="field mt-5">
-                    <button type="submit" class="button is-primary">Find Records</button>
-                </div>
-            </form>
-        </section>
-
-        <section id="update-section" class="section box is-rounded is-shadowless">
-            <h1 class="title">Update Information</h1>
-            <form method="post" action="">
-                <div class="columns">
-                    <div class="field column">
-                        <label class="label" for="animal_id">Animal ID:</label>
-                        <input class="input" type="text" name="animal_id">
-                    </div>
-                    <div class="field column">
-                        <label class="label" for="animal_name">Animal Name:</label>
-                        <input class="input" type="text" name="animal_name">
-                    </div>
-                </div>
-                <div class="columns">
-                    <div class="field column">
-                        <label class="label" for="animal_type">Animal Type:</label>
-                        <input class="input" type="text" name="animal_type">
-                    </div>
-                    <div class="field column">
-                        <label class="label" for="breed">Breed:</label>
-                        <input class="input" type="text" name="breed">
-                    </div>
-                </div>
-                <div class="columns">
-                    <div class="field column">
-                        <label class="label" for="date_of_birth">Date of Birth:</label>
-                        <input class="input" type="date" name="date_of_birth">
-                    </div>
-                </div>
-                <div class="columns">
-                    <div class="field column">
-                        <label class="label" for="allergies">Allergies:</label>
-                        <input class="input" type="text" name="allergies">
-                    </div>
-                    <div class="field column">
-                        <label class="label" for="medical_history">Medical History:</label>
-                        <input class="input" type="text" name="medical_history">
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label" for="owner_id">Owner ID:</label>
-                    <input class="input" type="text" name="owner_id">
+                    <input class="input" type="text" name="owner_id" placeholder="2">
                 </div>
 
                 <div class="field mt-5">
