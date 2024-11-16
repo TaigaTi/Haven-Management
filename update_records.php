@@ -85,7 +85,7 @@
 
     if ($animal_id_start !== null && $animal_id_end !== null) {
         $sql .= " AND animal_id BETWEEN '$animal_id_start' AND '$animal_id_end'";
-    } 
+    }
 
     if ($owner_id_start !== null && $owner_id_end !== null) {
         $sql .= " AND owner_id BETWEEN '$owner_id_start' AND '$owner_id_end'";
@@ -138,11 +138,11 @@
 
             if ($params['animal_id_start'] !== null && $params['animal_id_end'] !== null) {
                 $sql .= " AND animal_id BETWEEN '$params[animal_id_start]' AND '$params[animal_id_end]'";
-            } 
+            }
 
             if ($params['owner_id_start'] !== null && $params['owner_id_end'] !== null) {
                 $sql .= " AND owner_id BETWEEN '$params[owner_id_start]' AND '$params[owner_id_end]'";
-            } 
+            }
 
             return $sql;
         }
@@ -240,7 +240,6 @@
                 </div>
             <?php endif; ?>
 
-            <?php mysqli_free_result($result); ?>
         </section>
     </section>
 
@@ -265,21 +264,25 @@
                 <div class="columns">
                     <div class="field column">
                         <label class="label" for="animal_id">Animal ID:</label>
-                        <input class="input" type="text" name="animal_id" placeholder="E.g. Range: 2 - 3 or Single: 5" value="<?php echo $animal_id; ?>">
+                        <input class="input" type="text" name="animal_id" placeholder="E.g. Range: 2 - 3 or Single: 5"
+                            value="<?php echo $animal_id; ?>">
                     </div>
                     <div class="field column">
                         <label class="label" for="animal_name">Animal Name:</label>
-                        <input class="input" type="text" name="animal_name" placeholder="Buddy" value="<?php echo $animal_name; ?>">
+                        <input class="input" type="text" name="animal_name" placeholder="Buddy"
+                            value="<?php echo $animal_name; ?>">
                     </div>
                 </div>
                 <div class="columns">
                     <div class="field column">
                         <label class="label" for="animal_type">Animal Type:</label>
-                        <input class="input" type="text" name="animal_type" placeholder="Cat or Dog" value="<?php echo $animal_type; ?>">
+                        <input class="input" type="text" name="animal_type" placeholder="Cat or Dog"
+                            value="<?php echo $animal_type; ?>">
                     </div>
                     <div class="field column">
                         <label class="label" for="breed">Breed:</label>
-                        <input class="input" type="text" name="breed" placeholder="German Shepherd" value="<?php echo $breed; ?>">
+                        <input class="input" type="text" name="breed" placeholder="German Shepherd"
+                            value="<?php echo $breed; ?>">
                     </div>
                 </div>
                 <div class="columns">
@@ -300,7 +303,8 @@
                 </div>
                 <div class="field">
                     <label class="label" for="owner_id">Owner ID:</label>
-                    <input class="input" type="text" name="owner_id" placeholder="E.g. Range: 2 - 3 or Single: 5" value="<?php echo $owner_id; ?>">
+                    <input class="input" type="text" name="owner_id" placeholder="E.g. Range: 2 - 3 or Single: 5"
+                        value="<?php echo $owner_id; ?>">
                 </div>
 
                 <div class="field mt-5">
@@ -313,20 +317,21 @@
             <h1 class="title">Update Information</h1>
             <form method="post" action="">
                 <div class="columns">
-                   <?php
-                // If there are multiple records selected, show disabled input fields
-                if ($_GET['animal_id'] && strpos($_GET['animal_id'], '-') !== false) {
-                    echo '<div class="field column">
-                        <label class="label" for="animal_id">Animal ID:</label>
-                        <input class="input" type="text" name="animal_id" value="' . $_GET['animal_id'] . '" disabled>
-                    </div>';
-                } else {
-                    echo '<div class="field column">
-                        <label class="label" for="animal_id">Animal ID:</label>
-                        <input class="input" type="text" name="animal_id" placeholder="5">
-                    </div>';
-                }
-                   ?>
+                    <?php
+                        // If there are multiple records selected, show disabled input fields
+                        if (mysqli_num_rows($result) > 0) {
+                            echo '<div class="field column">
+                                    <label class="label" for="animal_id">Animal ID:</label>
+                                    <input class="input" type="text" name="animal_id" value="' . $animal_id . '" disabled>
+                                </div>';
+                        } else {
+                            echo '<div class="field column">
+                                    <label class="label" for="animal_id">Animal ID:</label>
+                                    <input class="input" type="text" name="animal_id" placeholder="5">
+                                </div>';
+                        }
+                        mysqli_free_result($result);
+                    ?>
                     <div class="field column">
                         <label class="label" for="animal_name">Animal Name:</label>
                         <input class="input" type="text" name="animal_name" placeholder="Buddy">
