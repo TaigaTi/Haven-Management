@@ -149,7 +149,7 @@
                                 echo "<td class='has-text-centered'>" . ($row['breed'] ?? '') . "</td>";
                                 echo "<td class='has-text-centered'>" . ($row['allergies'] ?? '') . "</td>";
                                 echo "<td class='has-text-centered'>" . ($row['medical_history'] ?? '') . "</td>";
-                                echo "<td class='has-text-centered'>" . ($row['owner_id'] ?? '') . "</td>";
+                                echo "<td class='has-text-centered'><a style='color: #7C53FA;' href='view_owner.php/" . ($row['owner_id']) . "'>" . ($row['owner_id'] ?? '') . "</a>" . "</td>";
                                 ?>
                             </tr>
                         <?php endwhile; ?>

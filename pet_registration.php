@@ -65,7 +65,7 @@
                     <div class="field column">
                         <label class="label" for="date_of_birth">Date of Birth:</label>
                         <div class="control">
-                            <input class="input" type="date" name="date_of_birth" required>
+                            <input class="input" type="date" name="date_of_birth">
                         </div>
                     </div>
                 </div>
@@ -120,21 +120,21 @@
                         <div class="field column">
                             <div class="label" for="new_owner_id">Owner ID:</div>
                             <div class="control">
-                                <input class="input" type="text" name="new_owner_id">
+                                <input class="input" type="text" name="new_owner_id" required>
                             </div>
                         </div>
 
                         <div class="field column">
                             <div class="label" for="owner_fname">First Name:</div>
                             <div class="control">
-                                <input class="input" type="text" name="owner_fname">
+                                <input class="input" type="text" name="owner_fname" required>
                             </div>
                         </div>
 
                         <div class="field column">
                             <div class="label" for="owner_lname">Last Name:</div>
                             <div class="control">
-                                <input class="input" type="text" name="owner_lname">
+                                <input class="input" type="text" name="owner_lname" required>
                             </div>
                         </div>
                     </div>
@@ -142,14 +142,14 @@
                     <div class="field">
                         <div class="label" for="phone">Phone Number:</div>
                         <div class="control">
-                            <input class="input" type="text" name="phone">
+                            <input class="input" type="text" name="phone" required>
                         </div>
                     </div>
 
                     <div class="field">
                         <div class="label" for="email">Email Address:</div>
                         <div class="control">
-                            <input class="input" type="email" name="email">
+                            <input class="input" type="email" name="email" required>
                         </div>
                     </div>
                 </section>

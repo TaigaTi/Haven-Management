@@ -319,7 +319,7 @@
                 <div class="columns">
                     <?php
                         // If there are multiple records selected, show disabled input fields
-                        if (mysqli_num_rows($result) > 0) {
+                        if (mysqli_num_rows($result) > 1) {
                             echo '<div class="field column">
                                     <label class="label" for="animal_id">Animal ID:</label>
                                     <input class="input" type="text" name="animal_id" value="' . $animal_id . '" disabled>
