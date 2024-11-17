@@ -120,21 +120,21 @@
                         <div class="field column">
                             <div class="label" for="new_owner_id">Owner ID:</div>
                             <div class="control">
-                                <input class="input" type="text" name="new_owner_id" required>
+                                <input class="input conditionalField" type="text" name="new_owner_id" required>
                             </div>
                         </div>
 
                         <div class="field column">
                             <div class="label" for="owner_fname">First Name:</div>
                             <div class="control">
-                                <input class="input" type="text" name="owner_fname" required>
+                                <input class="input conditionalField" type="text" name="owner_fname" required>
                             </div>
                         </div>
 
                         <div class="field column">
                             <div class="label" for="owner_lname">Last Name:</div>
                             <div class="control">
-                                <input class="input" type="text" name="owner_lname" required>
+                                <input class="input conditionalField" type="text" name="owner_lname" required>
                             </div>
                         </div>
                     </div>
@@ -142,14 +142,14 @@
                     <div class="field">
                         <div class="label" for="phone">Phone Number:</div>
                         <div class="control">
-                            <input class="input" type="text" name="phone" required>
+                            <input class="input conditionalField" type="text" name="phone" required>
                         </div>
                     </div>
 
                     <div class="field">
                         <div class="label" for="email">Email Address:</div>
                         <div class="control">
-                            <input class="input" type="email" name="email" required>
+                            <input class="input conditionalField" type="email" name="email" required>
                         </div>
                     </div>
                 </section>
@@ -163,7 +163,7 @@
         <script>
             const select = document.querySelector('select[name="owner_id"]');
             const newOwnerForm = document.querySelector('#new_owner');
-            const submit =document.querySelector('button[type="submit"]');
+            const submit = document.querySelector('button[type="submit"]');
 
             select.addEventListener('change', (event) => {
                 if (event.target.value === 'new') {
@@ -171,6 +171,12 @@
                     submit.innerHTML = 'Add Owner & Animal';
                 } else {
                     newOwnerForm.style.display = 'none';
+                }
+            });
+
+            document.getElementById('my-form').addEventListener('submit', (event) => {
+                if (newOwnerForm.style.display === 'none') {
+                    document.querySelectorAll('.conditionalField').forEach(el => el.removeAttribute('required'));
                 }
             });
         </script>
